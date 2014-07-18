@@ -1,0 +1,26 @@
+<div class="container">
+	<div class="row">
+		<div class="span12">
+			<div class="tabbable" id="tabs-502653">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#panel-447164" data-toggle="tab">英文</a>
+					</li>
+					<li class="active">
+						<a href="#panel-336786" data-toggle="tab">+</a>
+					</li>
+				</ul>
+				ng-repeat="category in  category_list | filter:query | orderBy:orderProp"
+				
+				<div class="tab-content">
+					
+					<div class="tab-pane" id="panel-1" ng-repeat="category in list">
+						<p>
+							第一部分内容.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

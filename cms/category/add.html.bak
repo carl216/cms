@@ -1,0 +1,48 @@
+<script src="js/uploader.js"></script>
+<tabset style="height: 40px;"> 
+<tab style="height: 40px;" ng-repeat="workspace in workspaces" 
+active=workspace.active> 
+<tab-heading style="height: 40px;"> 
+{{workspace.language}} 
+<a ng-click="deleteWorkspace($index)" href=''> 
+<i class="icon-remove"></i> 
+</a> 
+</tab-heading> 
+<div class="form-horizontal col-xs-12" > 
+<div class="form-group">
+	<label class="col-sm-3 control-label no-padding-right" >name</label>
+	<div class="col-sm-9"><input type="text" class="col-xs-10 col-sm-5" ng-model="workspace.name" /> </div> 
+</div> 
+<div class="space-4"></div>
+<div class="form-group">
+	<label class="col-sm-3 control-label no-padding-right" >parentId</label>
+	<div class="col-sm-9"><input type="text" class="col-xs-10 col-sm-5" ng-model="workspace.parentId" /> </div>
+</div>
+<div class="space-4"></div>
+
+<div class="form-group">
+	<label class="col-sm-3 control-label no-padding-right" >sequence</label>
+	 <div class="col-sm-9"><input type="text" class="col-xs-10 col-sm-5" ng-model="workspace.sequence" /></div> 
+</div>
+<div class="space-4"></div>
+<div class="form-group"><label class="col-sm-3 control-label no-padding-right" >picture</label>
+	 <div class="col-sm-9"><input type="text" class="col-xs-10 col-sm-5" ng-model="workspace.picture"  /></div>    
+</div> 
+<div class="space-4"></div>
+<div id='ajax_upload_demo' >
+  <form id='image_upload_form' method='post' enctype='multipart/form-data' action='//localhost/uploadify/add_avatar.php' target='upload_to'>
+	<p>Upload avatar</p>
+	<p><input type='file' id='file_browse' name='image'/> <input type='submit' value='Submit' ></p><a href="" ng-click="uploadimg()">showimg</a>
+    </form>
+    <iframe name='upload_to' id="upload_to" frameborder="0" scrolling="no" height="245" width="200">
+    </iframe>
+</div>
+</div> 
+<a href="" ng-click="submit()">submit</a>
+</tab> 
+<tab select="addWorkspace()"> 
+<tab-heading> <i 
+class="icon-plus-sign"></i> 
+</tab-heading> 
+</tab> 
+</tabset>

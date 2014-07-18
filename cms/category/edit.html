@@ -1,0 +1,141 @@
+<div id="test" class="ui-widget-overlay ui-front"></div>
+<div id="lang_list" class="row ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable" style="position: absolute; height: 219px; width: 400px; top: 107px; left: 562px; display: block;">
+	<div>
+		<div class="widget-box">
+			<div class="widget-header">
+				<h4> Choose the language</h4>
+				<div class="widget-toolbar">
+					<a  href="" ng-click="close()"> <i class="icon-remove"></i> </a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-body-inner" style="display: block;">
+					<div class="widget-main">
+
+						<div class="row">
+							<div class="col-xs-12 col-lg-4" ng-repeat="list in language_list">
+								<label>
+									<input class="ace" type="checkbox" name="form-field-checkbox"  ng-model="list.checked" >
+									<span class="lbl"> {{list.code}}</span> </label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div align="center" class="row">
+					<button class="btn btn-info" type="button" ng-click="submit()">
+						<i class="icon-ok bigger-110"></i>
+						Submit
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="widget-box">
+			<div class="widget-header">
+				<h4>Edit {{type}}</h4>
+				<div class="widget-toolbar">
+					<a data-action="collapse" href=""> <i class="icon-chevron-up"></i> </a>
+					<a data-action="close" href=""> <i class="icon-remove"></i> </a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-body-inner" style="display: block;">
+					<div class="widget-main">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-horizontal col-xs-12" >
+									<div class="space-4" style="display: block"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" >id</label>
+										<div class="col-sm-9">
+											<input type="text" class="col-xs-10 col-sm-5" ng-model="list.category.id" />
+										</div>
+									</div>									
+									<div class="space-4" style="display: block"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" >parentId</label>
+										<div class="col-sm-9">
+											<input type="text" class="col-xs-10 col-sm-5" ng-model="list.category.parentId" />
+										</div>
+									</div>
+									<div class="space-4"></div>
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" >sequence</label>
+										<div class="col-sm-9">
+											<input type="text" class="col-xs-10 col-sm-5" ng-model="list.category.sequence" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<tabset style="display: block">
+									<tab style="z-index: 99;height: 70px;" ng-repeat="workspace in workspaces.category.params"
+									active=workspace.active>
+										<tab-heading >
+											{{workspace.language}}
+											<a ng-click="deleteWorkspace($index,workspace.id)" href=''> <i class="icon-remove"></i> </a>
+										</tab-heading>
+
+										<div class="form-horizontal col-xs-12" >
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" >name</label>
+												<div class="col-sm-9">
+													<input type="text" class="col-xs-10 col-sm-5" ng-model="workspace.name" />
+												</div>
+											</div>
+											<div class="space-4"></div>
+
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" >picture</label>
+												<div class="col-sm-9">
+														<div id='ajax_upload_demo' >
+														<form id='image_upload_form' method='post' enctype='multipart/form-data' action='/testupload' target='upload_to'>
+														<a href="" ng-click="img_click()"><img src='img/avatar_no.jpg' /></a>
+														<p><input type='file' id='file_browse' name='image'/ style="display: none" ng-model="workspace.picture"> </p>			
+														</form>
+														    <iframe name='upload_to' id="upload_to" frameborder="0" scrolling="no" height="0" width="0">											
+   															 </iframe>
+													</div>
+												</div>
+											</div>
+											
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" ></label>
+												<div class="col-sm-9">
+													<button class="btn btn-info" type="button" ng-click="upload()">
+																<i class="icon-cloud-upload  bigger-110"></i>
+																Upload
+															</button>					
+												</div>
+											</div>		
+										</div>
+									</tab>
+									<tab style="z-index: 99;height: 70px;" select="addWorkspace()">
+										<tab-heading>
+											<i
+											class="icon-plus-sign"></i>
+										</tab-heading>
+									</tab>
+								</tabset>
+							</div>
+						</div>
+						<hr />
+						<div class="row" align="center">
+							<button class="btn btn-info" type="button" ng-click="submit_form()">
+								<i class="icon-ok bigger-110"></i>
+								Submit
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

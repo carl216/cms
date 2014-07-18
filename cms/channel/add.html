@@ -1,0 +1,295 @@
+<div id="tree_demo" class="row ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable" style="position: absolute;width: 400px; top: 107px; left: 562px; display: block;">
+	<div class="col-xs-12">
+		<!-- PAGE CONTENT BEGINS -->
+
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="widget-box">
+					<div class="widget-header header-color-blue2">
+						<h4 class="lighter smaller">Choose Categories</h4>
+					</div>
+
+					<div class="widget-body">
+						<div class="widget-main padding-8">
+							<div id="tree1" class="tree"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div align="center" class="row">
+				<button class="btn btn-info" type="button" ng-click="choose_categories()">
+					<i class="icon-ok bigger-110"></i>
+					Ok
+				</button>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			var $assets = "assets";
+			//this will be used in fuelux.tree-sampledata.js
+		</script>
+	</div>
+</div>
+<div id="test" class="ui-widget-overlay ui-front"></div>
+<div id="lang_list" class="row ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable" style="position: absolute;width: 400px; top: 107px; left: 562px; display: block;">
+	<div>
+		<div class="widget-box">
+			<div class="widget-header">
+				<h4>Choose the language </h4>
+				<div class="widget-toolbar">
+					<a  href="" ng-click="close()"> <i class="icon-remove"></i> </a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-body-inner" style="display: block;">
+					<div class="widget-main">
+
+						<div class="row">
+							<div class="col-xs-12 col-lg-4" ng-repeat="list in language_list">
+								<label>
+									<input class="ace" type="checkbox" name="form-field-checkbox"  ng-model="list.checked" >
+									<span class="lbl"> {{list.code}}</span> </label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div align="center" class="row">
+					<button class="btn btn-info" type="button" ng-click="submit()">
+						<i class="icon-ok bigger-110"></i>
+						Ok
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="widget-box">
+			<div class="widget-header">
+				<h4> New Album</h4>
+				<div class="widget-toolbar">
+					<a data-action="collapse" href=""> <i class="icon-chevron-up"></i> </a>
+					<a data-action="close" href=""> <i class="icon-remove"></i> </a>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-body-inner" style="display: block;">
+					<div class="widget-main">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-horizontal col-xs-12" >
+									<div class="space-4" style="display: block"></div>
+
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" >score</label>
+										<div class="col-sm-9" ng-init="s1=false;s2=false;s3=false;s4=false;s5=false;">
+											<a href="" ng-focus="s1=true;s2=false;s3=false;s4=false;s5=false;score=1;"  ng-click="set_score(1)"><i class="bigger-200" ng-class="{'icon-star-empty':!s1,'icon-star':s1}" ></i></a>
+											<a href="" ng-focus="s1=true;s2=true;s3=false;s4=false;s5=false;score=2;" ng-click="set_score(2)"><i class="bigger-200" ng-class="{'icon-star-empty':!s2,'icon-star':s2}" ></i></a>
+											<a href="" ng-focus="s1=true;s2=true;s3=true;s4=false;s5=false;score=3;" ng-click="set_score(3)"><i class="bigger-200" ng-class="{'icon-star-empty':!s3,'icon-star':s3}" ></i></a>
+											<a href="" ng-focus="s1=true;s2=true;s3=true;s4=true;s5=false;score=4;" ng-click="set_score(4)"><i class="bigger-200" ng-class="{'icon-star-empty':!s4,'icon-star':s4}" ></i></a>
+											<a href="" ng-focus="s1=true;s2=true;s3=true;s4=true;s5=true;score=5;" ng-click="set_score(5)"><i class="bigger-200" ng-class="{'icon-star-empty':!s5,'icon-star':s5}" ></i></a>
+										</div>
+									</div>
+									<div class="space-4"></div>
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" >status</label>
+										<div class="col-sm-9">
+											<input type="hidden" class="col-xs-10 col-sm-5" ng-model="parentId" />
+											<input id="id-button-borders" class="ace ace-switch ace-switch-4" type="checkbox" ng-model="status">
+											<span class="lbl"></span>
+										</div>
+									</div>
+									<div class="space-4"></div>
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" >categories</label>
+										<div class="col-sm-9">
+											<button id="categories" class="btn btn-info" type="button" ng-click="show_categories()">
+												Choose Categories
+											</button>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" >releaseYear</label>
+										<div class="col-sm-9">
+											<input type="hidden" class="col-xs-10 col-sm-5"  />
+												<div class="input-group input-group-sm col-sm-4">
+													<input type="text" id="datepicker" ng-model="releaseYear" class="form-control" />
+													<span class="input-group-addon">
+														<i class="icon-calendar"></i>
+													</span>
+												</div>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" >price</label>
+										<div class="col-sm-9">
+											<input type="hidden" class="col-xs-10 col-sm-5"  />
+												<div class="input-group input-group-sm col-sm-4">
+													<input type="text" id="datepicker" ng-model="price" class="form-control" />
+												</div>
+										</div>
+									</div>
+									<div class="space-4"></div>
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" >rentPrice</label>
+										<div class="col-sm-9">
+											<input type="hidden" class="col-xs-10 col-sm-5"  />
+												<div class="input-group input-group-sm col-sm-4">
+													<input type="text" id="datepicker" ng-model="rentPrice" class="form-control" />
+												</div>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" >bookurl</label>
+										<div class="col-sm-9">
+												<div class="input-group input-group-sm col-sm-4">
+													<input type="text"  ng-model="bookurl" class="form-control" />
+												</div>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<!--
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" >ebook</label>
+										<div class="col-sm-9">
+												<div class="input-group input-group-sm col-sm-4">
+													<input type="text"  ng-model="ebook" class="form-control" />
+												</div>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									-->
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<tabset style="display: block">
+									<tab style="z-index: 99;height: 70px;" ng-repeat="workspace in workspaces"
+									active=workspace.active>
+										<tab-heading >
+											{{workspace.language}}
+											<a ng-click="deleteWorkspace($index)" href=''> <i class="icon-remove"></i> </a>
+										</tab-heading>
+
+										<div class="form-horizontal col-xs-12" >
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" >name</label>
+												<div class="col-sm-9">
+													<input type="text" class="col-xs-10 col-sm-5" ng-model="workspace.name" />
+												</div>
+											</div>
+											<div class="space-4"></div>
+
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" >artist</label>
+												<div class="col-sm-9">
+													<input type="text" class="col-xs-10 col-sm-5" ng-model="workspace.artist" />
+												</div>
+											</div>
+											<div class="space-4"></div>
+
+
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" >intro</label>
+												<div class="col-sm-9">
+													<textarea id="form-field-11" class="autosize-transition form-control" ng-model="workspace.intro"></textarea>
+												</div>
+											</div>
+											<div class="space-4"></div>
+
+
+											<div class="form-group">
+												<label class="col-sm-3 control-label no-padding-right" >picture</label>
+												<div class="col-sm-9">
+												 <div id='ajax_upload_demo' style="height: 155px;" >
+														<form id='image_upload_form' method='post' enctype='multipart/form-data' action='/testupload' target='upload_to'>
+														<a href="" ng-click="img_click()"><img src='img/avatar_no.jpg' /></a>
+														<p><input type='file' id='file_browse' name='image'/ ng-model="workspace.picture" style="display: none"> </p>			
+														</form>
+														    <iframe name='upload_to' id="upload_to" frameborder="0" scrolling="no" height="0" width="0">											
+   															 </iframe>
+													</div>
+													<button class="btn btn-info" type="button" ng-click="upload()">
+													<i class="icon-cloud-upload  bigger-110"></i>
+													Upload
+													</button>	
+												</div>
+											</div>
+											
+											
+											
+										</div>
+									</tab>
+									<tab style="z-index: 99;height: 70px;" select="addWorkspace()">
+										<tab-heading>
+											<i
+											class="icon-plus-sign"></i>
+										</tab-heading>
+									</tab>
+								</tabset>
+							</div>
+						</div>
+						<hr />
+						<div class="row" align="center">
+							<button class="btn btn-info" type="button" ng-click="submit_form()">
+								<i class="icon-ok bigger-110"></i>
+								Submit
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	var DataSourceTree = function(options) {
+		this._data = options.data;
+		this._delay = options.delay;
+	}
+
+	DataSourceTree.prototype.data = function(options, callback) {
+		var self = this;
+		var $data = null;
+		console.log('==============DataSourceTree.prototype.data==============');
+		console.log('begin---------');
+		console.log(options);
+		if (!("name" in options) && !("type" in options)) {
+			$data = this._data;
+			//the root tree
+			callback({
+				data : $data
+			});
+			return;
+		} else if ("type" in options && options.type == "folder") {
+			if ( "childs" in options)
+				$data = options.childs;
+			else
+				$data = {}
+			//no data
+		}
+
+		if ($data != null)//this setTimeout is only for mimicking some random delay
+			setTimeout(function() {
+				callback({
+					data : $data
+				});
+			}, parseInt(Math.random() * 500) + 200);
+		//we have used static data here
+		//but you can retrieve your data dynamically from a server using ajax call
+		//checkout examples/treeview.html and examples/treeview.js for more info
+	} ; 
+</script>

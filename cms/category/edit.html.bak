@@ -1,0 +1,96 @@
+<tabset style="height: 40px;"> 
+<tab style="height: 40px;" ng-repeat="workspace in workspaces.category" 
+active=workspace.active> 
+<tab-heading style="height: 40px;"> 
+{{workspace.name}} 
+<a ng-click="deleteWorkspace($index)" href=''> 
+<i class="icon-remove"></i> 
+</a> 
+</tab-heading> 
+<div class="form-horizontal col-xs-12" > 
+<div class="space-8"></div>	
+<div class="space-4"></div>
+<div class="space-4"></div>
+<div class="form-group">
+	<label class="col-sm-3 control-label no-padding-right" >id</label>
+	<div class="col-sm-9"><input type="text" class="col-xs-10 col-sm-5" ng-model="workspace.id" /> </div> 
+</div> 
+<div class="form-group">
+	<label class="col-sm-3 control-label no-padding-right" >name</label>
+	<div class="col-sm-9"><input type="text" class="col-xs-10 col-sm-5" ng-model="workspace.name" /> </div> 
+</div> 
+<div class="space-4"></div>
+<div class="form-group">
+	<label class="col-sm-3 control-label no-padding-right" >parentId</label>
+	<div class="col-sm-9"><input type="text" class="col-xs-10 col-sm-5" ng-model="workspace.parentId" /> </div>
+</div>
+<div class="space-4"></div>
+
+<div class="form-group">
+	<label class="col-sm-3 control-label no-padding-right" >sequence</label>
+	 <div class="col-sm-9"><input type="text" class="col-xs-10 col-sm-5" ng-model="workspace.sequence" /></div> 
+</div>
+<div class="space-4"></div>
+<div class="form-group"><label class="col-sm-3 control-label no-padding-right" >picture</label>
+	 <div class="col-sm-9"><input type="text" class="col-xs-10 col-sm-5" ng-model="workspace.picture"  />
+	 	<div id='ajax_upload_demo' >
+  <form id='image_upload_form' method='post' enctype='multipart/form-data' action='//localhost/uploadify/add_avatar.php' target='upload_to'>
+	<input type='file' id='file_browse' name='image'/> <input type='submit' value='Submit' ><a href="" ng-click="uploadimg()">showimg</a>
+    </form>
+    <iframe name='upload_to' id="upload_to" frameborder="0" scrolling="no" height="100" width="100">
+    	<img src="http://172.16.11.41/pic1.jpg"  width="100" height="100"/>
+    </iframe>
+</div>
+	 </div>    
+</div> 
+<div class="space-4"></div>
+</div> 
+
+<div class="clearfix form-actions">
+<div class="col-md-offset-3 col-md-9">
+<button class="btn btn-info" type="button" ng-click="submit()">
+<i class="icon-ok bigger-110"></i>
+Submit
+</button>
+</div>
+</div>
+									<div class="col-sm-6">
+										<h3 class="header blue lighter smaller">
+											<i class="icon-list-alt smaller-90"></i>
+											Dialogs
+										</h3>
+										<a href="" id="id-btn-dialog2" class="btn btn-info btn-sm">Confirm Dialog</a>
+										<a href="" id="id-btn-dialog1" class="btn btn-purple btn-sm">Modal Dialog</a>
+
+										<div id="dialog-message" class="hide">
+											<p>
+												This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.
+											</p>
+
+											<div class="hr hr-12 hr-double"></div>
+
+											<p>
+												Currently using
+												<b>36% of your storage space</b>
+												.
+											</p>
+										</div><!-- #dialog-message -->
+
+										<div id="dialog-confirm" class="hide">
+											<div class="alert alert-info bigger-110">
+												These items will be permanently deleted and cannot be recovered.
+											</div>
+
+											<div class="space-6"></div>
+
+											<p class="bigger-110 bolder center grey">
+												<i class="icon-hand-right blue bigger-120"></i>
+												Are you sure?
+											</p>
+										</div><!-- #dialog-confirm -->
+									</div><!-- ./span -->
+								</div><!-- ./row-fluid -->
+</div>
+</tab> 
+</tabset>
+

@@ -1,0 +1,534 @@
+'use strict';
+
+/* Controllers */
+'use strict';
+
+/* Controllers */
+
+var cmsControllers = angular.module('cmsControllers', []);
+
+cmsControllers.controller('CategoryAddCtrl', ['$scope','$modal', '$log','CategoryAdd', function($scope, $modal, $log,CategoryAdd) {
+	$scope.language_list=[];
+	$scope.language_list.push({checked:true, code: "zh-CN", language: "中文简体"});
+	$scope.language_list.push({checked:false, code: "zh-TW", language: "中文繁体"});
+	$scope.language_list.push({checked:false, code: "de-DE", language: "de-DE"});
+	$scope.language_list.push({checked:false, code: "en-US", language: "en-US"});
+	$scope.language_list.push({checked:false, code: "en-GB", language: "en-GB"});
+	$scope.language_list.push({checked:false, code: "fr-FR", language: "fr-FR"});
+	$scope.language_list.push({checked:false, code: "it-IT", language: "it-IT"});
+	$scope.rows=[];
+	$scope.parentId=0;
+	$scope.sequence=0;
+	var tmp=[];
+	for(var i=0;i<Math.ceil($scope.language_list.length);i++){
+		$scope.rows.push({index:i});
+	}
+	$scope.close = function(lang) {
+		  $("#test").hide();
+		  $("#lang_list").hide();
+  };
+  var setAllInactive = function() { 
+	  angular.forEach($scope.workspaces, function(workspace) { 
+	  workspace.active = false; 
+	  }); 
+	  }; 
+	 var addNewWorkspace = function() { 
+	  $scope.workspaces.push({ 
+	  language:"zh-CN", 
+	  active: true 
+	  }); 
+	  tmp=["zh-CN"];
+	  }; 
+	  $scope.workspaces = []; 
+	  $scope.addWorkspace = function () { 
+				setAllInactive(); 
+				addNewWorkspace(); 
+			  $("#test").show();
+			  $("#lang_list").show();
+	  }; 
+	  $scope.deleteWorkspace = function (index) { 
+	  $scope.workspaces.splice(index,$scope.workspaces.length > 1); 
+	  tmp.splice(index,$scope.workspaces.length > 1); 
+	  };	  
+	  $scope.submit=function(){
+		  for ( var item in  $scope.language_list) {
+			  if($scope.language_list[item].checked && tmp.indexOf($scope.language_list[item].code)==-1){
+				  $scope.workspaces.push({ 
+					  language:$scope.language_list[item].code, 
+					  active: true 
+					  }); 
+				  tmp.push($scope.language_list[item].code);
+			  }
+		}
+		  $("#test").hide();
+		  $("#lang_list").hide();
+		  
+	  } 
+	  $scope.submit_form=function(){
+		  var form={};
+		  var params=[];
+		  for ( var i=0; i< $scope.workspaces.length;i++) {
+			params.push({language:$scope.workspaces[i].language,name:$scope.workspaces[i].name});
+			
+		  }  
+		  CategoryAdd.query({sequence:$scope.sequence,parentId:$scope.parentId,defaultLang:'en-US',params:params}, function(resp)
+				  {
+			  window.history.go(-1);
+			   console.log(resp);
+			 });
+	  }	
+	  $scope.upload=function(index){
+			$('iframe[name=upload_to]').load(function(){
+			    var result = $(this).contents().text();
+			    if(result !=''){
+				if (result == 'Err:big'){
+				    $('div#ajax_upload_demo img').attr('src','img/avatar_big.jpg');
+				    return;
+				}
+				if (result == 'Err:format'){
+				    $('div#ajax_upload_demo img').attr('src','img/avatar_invalid.jpg');
+				    return;
+				}
+				$('div#ajax_upload_demo img').attr('src',$(this).contents().text());
+			    }
+			});
+		  $('div#ajax_upload_demo img').attr('src','img/loading.gif');
+		  $("#image_upload_form").submit();
+		  
+		  
+	  }
+	  $scope.img_click=function(){
+		  $("#file_browse").click();
+		  
+	  }
+	  
+}]);
+
+
+cmsControllers.controller('CategoryEditCtrl',['$scope','$routeParams','Category','CategoryEDI', function($scope,$routeParams,Category,CategoryEDI) {
+	$scope.language_list=[];
+	$scope.language_list.push({checked:true, code: "zh-CN", language: "中文简体"});
+	$scope.language_list.push({checked:false, code: "zh-TW", language: "中文繁体"});
+	$scope.language_list.push({checked:false, code: "de-DE", language: "de-DE"});
+	$scope.language_list.push({checked:false, code: "en-US", language: "en-US"});
+	$scope.language_list.push({checked:false, code: "en-GB", language: "en-GB"});
+	$scope.language_list.push({checked:false, code: "fr-FR", language: "fr-FR"});
+	$scope.language_list.push({checked:false, code: "it-IT", language: "it-IT"});
+	var tmp=[];
+	$scope.list = Category.get({categoryId: $routeParams.categoryId}, function(data) {
+			for ( var item in data.category.params) {
+				 tmp.push(data.category.params[item].language);				 
+			}			
+    		setAllInactive();
+      });
+	  $scope.workspaces = $scope.list; 
+      $scope.deleteWorkspace = function (index) { 
+      if(confirm( 'Are you sure you want to delete?' )){
+    		$scope.workspaces.category.params.splice(index,1); 
+    		tmp.splice(index,1); 
+    	}
+      };       
+    	$scope.close = function() {
+    			  $("#test").hide();
+    			  $("#lang_list").hide();
+    	  };
+    	var setAllInactive = function() { 
+    		  angular.forEach($scope.workspaces.category.params, function(workspace) { 
+    		  workspace.active = false; 
+    		  }); 
+    		  }; 
+    	$scope.addWorkspace = function () { 
+    				  $("#test").show();
+    				  $("#lang_list").show();
+    		  }; 
+    		  $scope.submit=function(){
+    			  for ( var item in  $scope.language_list) {
+    				  if($scope.language_list[item].checked && tmp.indexOf($scope.language_list[item].code)==-1){
+    					  $scope.workspaces.category.params.push({ 
+    						  language:$scope.language_list[item].code, 
+    						  active: true 
+    						  }); 
+    					  tmp.push($scope.language_list[item].code);
+    				  }
+    			}
+    			  $("#test").hide();
+    			  $("#lang_list").hide();
+    			  
+    		  }
+    		  
+    		  $scope.submit_form=function(){
+    			  var form={};
+    			  var params_tmp=[];
+    			  for ( var i=0; i< $scope.workspaces.category.params.length;i++) {
+    				  params_tmp.push({language:$scope.workspaces.category.params[i].language,name:$scope.workspaces.category.params[i].name,id:$scope.workspaces.category.params[i].id});
+    				
+    			  } 
+    			  CategoryEDI.put({id:$scope.list.category.id},{id:$scope.list.category.id,sequence:$scope.list.category.sequence,parentId:$scope.list.category.parentId,defaultLang:'en-US',params:params_tmp}, function(resp)
+    					  {
+    				   console.log(resp);
+    				 });
+
+    		  }	 
+}]);
+cmsControllers.controller('CategoryListCtrl', ['$scope','Category','CategoryDel', function($scope,Category,CategoryDel) {
+	var page_index=1;
+	var page_size=10;
+	var max_page=1;
+	$scope.category_list = Category.get({categoryId:'list',first:0,max:page_size}, function(data) {
+		 console.log(data);
+		 max_page=Math.ceil(data.totalCount/page_size);
+		 init_page();
+    });
+	
+	var init_page=function (){
+		var pages=[];
+		if(page_index > 1){
+			pages.push({name:'',css:'prev',i_css:'icon-double-angle-left'});
+		}else{
+			pages.push({name:'',css:'prev disabled',i_css:'icon-double-angle-left'});
+		}
+		for(var i=1;i <= max_page;i++){
+			if(page_index==i){
+				pages.push({name:i,css:'active',i_css:''});
+			}else{
+				pages.push({name:i,css:'',i_css:''});
+			}
+			
+		}
+		if(page_index<max_page){
+			pages.push({name:'',css:'next',i_css:'icon-double-angle-right'});
+		}else{
+			pages.push({name:'',css:'next disabled',i_css:'icon-double-angle-right'});
+		}
+		$scope.pages=pages;
+	}
+	 init_page();
+	$scope.go_page = function(index){
+		if(index==0&&page_index>1){
+			page_index--;
+		}else if(index==max_page+1&&page_index<max_page){
+			page_index++;
+		}else if(index !=0 && index != max_page+1){
+			page_index=index;
+		}else{
+			return;
+		}		
+		$scope.category_list = Category.get({categoryId:'list',first:(page_index-1)*page_size,max:page_size}, function(data) {
+			 console.log(data);
+			 max_page=Math.ceil(data.totalCount/page_size);
+			 page_index=index;
+			 init_page();
+	    });
+	}
+    $scope.orderProp = 'id'; 
+    $scope.dodelete = function(category,index) {
+        $scope.category_list.categoryList.splice(index,1);
+        CategoryDel.delete({categoryId:category.id});
+      };
+      
+    $scope.search = function(name) {
+    	$scope.category_list=Category.get({categoryId:'list',first:0,max:10,name:name}, function(resp) {
+   		 console.log(resp);
+        });
+	}
+}]);
+
+
+cmsControllers.controller('AlbumListCtrl', ['$scope','Album','AlbumDel', function($scope,Music,MusicDel) {
+
+}]);
+
+cmsControllers.controller('AlbumAddCtrl', ['$scope','Album','AlbumDel', function($scope,Music,MusicDel) {
+	$scope.language_list=[];
+	$scope.language_list.push({checked:true, code: "zh-CN", language: "中文简体"});
+	$scope.language_list.push({checked:false, code: "zh-TW", language: "中文繁体"});
+	$scope.language_list.push({checked:false, code: "de-DE", language: "de-DE"});
+	$scope.language_list.push({checked:false, code: "en-US", language: "en-US"});
+	$scope.language_list.push({checked:false, code: "en-GB", language: "en-GB"});
+	$scope.language_list.push({checked:false, code: "fr-FR", language: "fr-FR"});
+	$scope.language_list.push({checked:false, code: "it-IT", language: "it-IT"});
+	$scope.rows=[];
+	$scope.parentId=0;
+	$scope.sequence=0;
+	var tmp=[];
+	for(var i=0;i<Math.ceil($scope.language_list.length);i++){
+		$scope.rows.push({index:i});
+	}
+	$scope.close = function(lang) {
+		  $("#test").hide();
+		  $("#lang_list").hide();
+  };
+  /*
+	$( "#datepicker" ).datepicker({
+		showOtherMonths: true,
+		selectOtherMonths: false,
+		//isRTL:true,
+
+		
+
+		changeMonth: true,
+		changeYear: true,
+		
+		showButtonPanel: true,
+		beforeShow: function() {
+			//change button colors
+			var datepicker = $(this).datepicker( "widget" );
+			setTimeout(function(){
+				var buttons = datepicker.find('.ui-datepicker-buttonpane')
+				.find('button');
+				buttons.eq(0).addClass('btn btn-xs');
+				buttons.eq(1).addClass('btn btn-xs btn-success');
+				buttons.wrapInner('<span class="bigger-110" />');
+			}, 0);
+		}
+
+	});		
+	*/
+  var setAllInactive = function() { 
+	  angular.forEach($scope.workspaces, function(workspace) { 
+	  workspace.active = false; 
+	  }); 
+	  }; 
+  var addNewWorkspace = function() { 
+	  $scope.workspaces.push({ 
+	  language:"zh-CN", 
+	  active: true 
+	  }); 
+	  tmp=["zh-CN"];
+	  }; 
+	  $scope.workspaces = []; 
+	  $scope.addWorkspace = function () { 
+				setAllInactive(); 
+				addNewWorkspace(); 
+			  $("#test").show();
+			  $("#lang_list").show();
+	  }; 
+	  $scope.deleteWorkspace = function (index) { 
+		  alert(index);
+	  $scope.workspaces.splice(index,$scope.workspaces.length > 1); 
+	  tmp.splice(index,$scope.workspaces.length > 1); 
+	  };	  
+	  $scope.submit=function(){
+		  for ( var item in  $scope.language_list) {
+			  if($scope.language_list[item].checked && tmp.indexOf($scope.language_list[item].code)==-1){
+				  $scope.workspaces.push({ 
+					  language:$scope.language_list[item].code, 
+					  active: true 
+					  }); 
+				  tmp.push($scope.language_list[item].code);
+			  }
+		}
+		  $("#test").hide();
+		  $("#lang_list").hide();
+		  
+	  } 
+	  
+	  var tree_data = {
+				'for-sale' : {name: 'For Sale', type: 'folder'}	,
+				'vehicles' : {name: 'Vehicles', type: 'folder'}	,
+				'tickets' : {name: 'Tickets', type: 'item'}	,
+			}
+			tree_data['for-sale']['additionalParameters'] = {
+				'children' : {
+					'appliances' : {name: 'Appliances', type: 'item'},
+					'arts-crafts' : {name: 'Arts & Crafts', type: 'item'},
+					'clothing' : {name: 'Clothing', type: 'item'},
+					'computers' : {name: 'Computers', type: 'item'},
+					'jewelry' : {name: 'Jewelry', type: 'item'},
+					'office-business' : {name: 'Office & Business', type: 'item'},
+					'sports-fitness' : {name: 'Sports & Fitness', type: 'item'}
+				}
+			}
+			tree_data['vehicles']['additionalParameters'] = {
+				'children' : {
+					'cars' : {name: 'Cars', type: 'folder'},
+					'motorcycles' : {name: 'Motorcycles', type: 'item'},
+					'boats' : {name: 'Boats', type: 'item'}
+				}
+			}
+			tree_data['vehicles']['additionalParameters']['children']['cars']['additionalParameters'] = {
+				'children' : {
+					'classics' : {name: 'Classics', type: 'item'},
+					'convertibles' : {name: 'Convertibles', type: 'item'},
+					'coupes' : {name: 'Coupes', type: 'item'},
+					'hatchbacks' : {name: 'Hatchbacks', type: 'item'},
+					'hybrids' : {name: 'Hybrids', type: 'item'},
+					'suvs' : {name: 'SUVs', type: 'item'},
+					'sedans' : {name: 'Sedans', type: 'item'},
+					'trucks' : {name: 'Trucks', type: 'item'}
+				}
+			}
+	  $scope.submit_form=function(){
+		  var form={};
+		  var params=[];
+		  for ( var i=0; i< $scope.workspaces.length;i++) {
+			params.push({language:$scope.workspaces[i].language,name:$scope.workspaces[i].name});
+			
+		  }  
+		  CategoryAdd.query({sequence:$scope.sequence,parentId:$scope.parentId,defaultLang:'en-US',params:params}, function(resp)
+				  {
+			  window.history.go(-1);
+			   console.log(resp);
+			 });
+	  }
+	  var treeDataSource = new DataSourceTree({data: tree_data});
+	  console.log(tree_data);
+		$('#tree1').ace_tree({
+			dataSource: treeDataSource ,
+			multiSelect:true,
+			loadingHTML:'<div class="tree-loading"><i class="icon-refresh icon-spin blue"></i></div>',
+			'open-icon' : 'icon-minus',
+			'close-icon' : 'icon-plus',
+			'selectable' : true,
+			'selected-icon' : 'icon-ok',
+			'unselected-icon' : 'icon-remove'
+		});
+		$('#tree1').on('loaded', function (evt, data) {
+
+		});
+
+		$('#tree1').on('opened', function (evt, data) {
+
+		});
+
+		$('#tree1').on('closed', function (evt, data) {
+		});
+
+		$('#tree1').on('selected', function (evt, data) {
+			var str='';
+			for ( var item in data.info) {
+				  str+=data.info[item].name+"|";
+			}
+			  $("#categories").html(str);
+		});
+	  $("#tree_demo").hide();
+	  $scope.choose_categories=function(){
+		  $("#test").hide();
+		  $("#tree_demo").hide();
+	  }
+	  $scope.show_categories=function(){
+		  $("#test").show();
+		  $("#tree_demo").show();
+	  }
+}]);
+
+cmsControllers.controller('AlbumEditCtrl', ['$scope','Album','AlbumDel', function($scope,Music,MusicDel) {
+
+}]);
+
+
+cmsControllers.controller('cityListCtrl', ['$scope', '$modal', '$log', '$http', function($scope, $modal, $log, $http) {
+	  var url = "http://ottawa3:8081/ess/rest/city/list";
+	  $scope.filterOptions = {
+		        filterText: "",
+		        useExternalFilter: true
+		    }; 
+		    $scope.totalServerItems = 0;
+		    $scope.pagingOptions = {
+		        pageSizes: [10, 20, 30],
+		        pageSize: 10,
+		        currentPage: 1
+		    };	
+		    $scope.setPagingData = function(data, page, pageSize){	
+		        var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
+		        $scope.myData = pagedData;
+		        $scope.totalServerItems = data.length;
+		        if (!$scope.$$phase) {
+		            $scope.$apply();
+		        }
+		    };
+		    $scope.getPagedDataAsync = function (pageSize, page, searchText) {
+		        setTimeout(function () {
+		            var data;
+		            if (searchText) {
+		                var ft = searchText.toLowerCase();
+		                $http.get(url).success(function (largeLoad) {
+		                	var list = largeLoda.cities;
+		                    data = list.filter(function(item) {
+		                        return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
+		                    });
+		                    $scope.setPagingData(data,page,pageSize);
+		                });            
+		            } else {
+		                $http.get(url).success(function (largeLoad) {
+		                	var list = largeLoad.cities;
+		                    $scope.setPagingData(list,page,pageSize);
+		                });
+		            }
+		        }, 100);
+		    };
+			
+		    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+			
+		    $scope.$watch('pagingOptions', function (newVal, oldVal) {
+		        if (newVal !== oldVal) {
+		          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+		        }
+		    }, true);
+		    $scope.$watch('filterOptions', function (newVal, oldVal) {
+		        if (newVal !== oldVal) {
+		          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+		        }
+		    }, true);
+			
+		    $scope.gridOptions = {
+		        data: 'myData',
+		        enablePaging: true,
+				showFooter: true,
+		        totalServerItems: 'totalServerItems',
+		        pagingOptions: $scope.pagingOptions,
+		        filterOptions: $scope.filterOptions
+		    };
+	  
+	  
+	  
+
+	  $http.get(url)
+	      .success(function(data){
+	          console.log(data.resultCode);
+	          $scope.items = data.cities;
+	      });
+	  
+	  	$scope.delete=function(index) {
+		    $scope.items.splice(index,1);
+		};
+		$scope.open = function () {
+
+		    var modalInstance = $modal.open({
+		      templateUrl: 'myModalContent.html',
+		      controller: ModalInstanceCtrl,
+		      resolve: {
+		        items: function () {
+		          return $scope.items;
+		        }
+		      }
+		    });
+
+		    modalInstance.result.then(function (selectedItem) {
+		      $scope.selected = selectedItem;
+		    }, function () {
+		      $log.info('Modal dismissed at: ' + new Date());
+		    });
+		  }; 
+	  
+}])
+cmsControllers.controller('cityEditCtrl',['$scope','$routeParams', function($scope, $routeParams) {
+	  $scope.cityId = $routeParams.cityId;
+}]);
+
+var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+
+	  $scope.items = items;
+	  $scope.selected = {
+	    item: $scope.items[0]
+	  };
+
+	  $scope.ok = function () {
+	    $modalInstance.close($scope.selected.item);
+	  };
+
+	  $scope.cancel = function () {
+	    $modalInstance.dismiss('cancel');
+	  };
+	};
+	
